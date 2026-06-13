@@ -5,7 +5,7 @@ export interface Question {
   text: string
   options: string[]
   correctIndex: number
-  timeLimit: number // seconds
+  timeLimit: number
   points: number
 }
 
@@ -18,35 +18,38 @@ export interface Quiz {
   createdBy: string
 }
 
+export interface PlayerAnswer {
+  questionId: string
+  selectedIndex: number | null
+  isCorrect: boolean
+  timeSpent: number
+  pointsEarned: number
+}
+
 export interface Player {
   uid: string
   username: string
-  avatar: string // emoji avatar
+  avatar: string
   score: number
   answers: PlayerAnswer[]
+  questionOrder: number[]   // aralash savol tartibi (indekslar)
+  currentIndex: number      // o'quvchi hozir qaysi savolda
+  finished: boolean         // tugatganmi
+  finishedAt: number | null
   rank?: number
   isOnline: boolean
   joinedAt: number
 }
 
-export interface PlayerAnswer {
-  questionId: string
-  selectedIndex: number | null
-  isCorrect: boolean
-  timeSpent: number // ms
-  pointsEarned: number
-}
-
 export interface GameSession {
   id: string
   quizId: string
-  status: 'waiting' | 'countdown' | 'question' | 'answer_reveal' | 'leaderboard' | 'finished'
-  currentQuestionIndex: number
-  questionStartTime: number | null
-  players: Record<string, Player>
-  quiz: Quiz
+  status: 'waiting' | 'countdown' | 'active' | 'finished'
+  totalTime: number         // umumiy vaqt (soniya)
   startedAt: number | null
   finishedAt: number | null
+  players: Record<string, Player>
+  quiz: Quiz
   countdownValue: number
 }
 
@@ -58,3 +61,8 @@ export interface User {
 }
 
 export const AVATARS = ['🦊', '🐼', '🦁', '🐯', '🦋', '🐸', '🦄', '🐙', '🦅', '🐬', '🌟', '🔥', '⚡', '🎯', '🚀']
+
+// Savollar soniga qarab umumiy vaqt (har savol uchun o'rtacha 25 sek + 10 sek zaxira)
+export function calcTotalTime(questionCount: number): number {
+  return questionCount * 25 + 10
+}
