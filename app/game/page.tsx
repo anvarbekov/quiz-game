@@ -127,10 +127,8 @@ export default function GamePage() {
     const nextIndex = myCurrentIndex + 1
     const isFinished = nextIndex >= order.length
 
-    // Short delay then move to next question
-    setTimeout(async () => {
-      await submitPlayerAnswer(sessionId, user.uid, newAnswer, newScore, allAnswers, nextIndex, isFinished)
-    }, 800)
+    // Move to next question immediately
+    await submitPlayerAnswer(sessionId, user.uid, newAnswer, newScore, allAnswers, nextIndex, isFinished)
   }
 
   async function handleFinish() {
@@ -214,7 +212,7 @@ export default function GamePage() {
             <p className="text-white/50">Barcha savollarni tugatdingiz</p>
             <div className="bg-gradient-card rounded-2xl p-6 inline-block">
               <p className="font-display text-5xl font-black text-purple-300">{myPlayer?.score}</p>
-              <p className="text-white/40 text-sm mt-1">ball</p>
+              <p className="text-white/40 text-sm mt-1">to'g'ri javob</p>
             </div>
             <p className="text-white/30 text-sm animate-pulse">Boshqalar tugatishini kuting...</p>
           </div>

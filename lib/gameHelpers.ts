@@ -144,8 +144,7 @@ export function calculatePoints(
   basePoints: number
 ): number {
   if (!isCorrect) return 0
-  const timeFraction = Math.max(0, 1 - timeSpentMs / (timeLimitSec * 1000))
-  return basePoints + Math.floor(timeFraction * basePoints * 0.5)
+  return 1
 }
 
 export function getRankedPlayers(players: Record<string, Player>): Player[] {
