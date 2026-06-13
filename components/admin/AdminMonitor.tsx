@@ -31,7 +31,8 @@ export default function AdminMonitor({ session, onEndSession }: Props) {
   // Auto-end when all finished or time runs out
   useEffect(() => {
     if (session.status !== 'active') return
-    if (allFinished || totalTimeLeft === 0) {
+    if (allFinished) { onEndSession(); return }
+    if (totalTimeLeft === 0 && session.startedAt && (Date.now() - session.startedAt) > 5000) {
       onEndSession()
     }
   }, [allFinished, totalTimeLeft, session.status])

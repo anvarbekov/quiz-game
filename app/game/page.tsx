@@ -78,7 +78,7 @@ export default function GamePage() {
       const left = Math.max(0, session.totalTime - elapsed)
       setTotalTimeLeft(left)
       // Auto-finish when time runs out
-      if (left === 0 && sessionId && user && myPlayer && !myPlayer.finished) {
+      if (left === 0 && sessionId && user) {
         finishPlayer(sessionId, user.uid)
       }
     }
@@ -149,7 +149,7 @@ export default function GamePage() {
   const order = myPlayer?.questionOrder || []
   const qIdx = order[myCurrentIndex] ?? 0
   const currentQ = session.quiz.questions[qIdx]
-  const isFinished = myPlayer?.finished || false
+  const isFinished = myPlayer?.finished === true && (myPlayer?.questionOrder?.length || 0) > 0
   const progressPct = totalQ > 0 ? (myCurrentIndex / totalQ) * 100 : 0
   const totalMin = Math.floor(totalTimeLeft / 60)
   const totalSec = totalTimeLeft % 60
