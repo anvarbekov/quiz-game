@@ -55,8 +55,8 @@ export default function AdminPage() {
     return subscribeSession(sessionId, (s) => {
       setActiveSession(s)
       if (s.status === 'waiting' || s.status === 'countdown') setView('lobby')
-      else if (s.status === 'finished') setView('winners')
       else if (s.status === 'active') setView('monitor')
+      else if (s.status === 'finished') setView('monitor') // stay on monitor, show results tab
     })
   }, [sessionId])
 
