@@ -1,4 +1,3 @@
-// app/api/admin/delete-user/route.ts
 import { NextRequest, NextResponse } from 'next/server'
 
 const PROJECT_ID = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID
@@ -21,30 +20,18 @@ export async function POST(req: NextRequest) {
   try {
     const { uid } = await req.json()
     if (!uid) return NextResponse.json({ error: 'UID kerak' }, { status: 400 })
-
     const token = await getAdminToken()
 
-    // Delete from Firebase Auth
     await fetch(
       `https://identitytoolkit.googleapis.com/v1/projects/${PROJECT_ID}/accounts/${uid}`,
-      {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` },
-      }
+      { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } }
     )
-
-    // Delete from Firestore
     await fetch(
       `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/users/${uid}`,
-      {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` },
-      }
+      { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } }
     )
-
     return NextResponse.json({ success: true })
   } catch (err: any) {
-    console.error('delete-user error:', err)
     return NextResponse.json({ error: err.message }, { status: 500 })
   }
 }
