@@ -38,7 +38,16 @@ export default function AdminPage() {
 
   useEffect(() => {
     if (!user) return
-    getActiveSessionId().then(sid => { if (sid) setSessionId(sid) })
+    getActiveSessionId().then(async sid => {
+      if (!sid) return
+      // Only resume if session is not finished
+      const { doc, getDoc } = await import('firebase/firestore')
+      const { db } = await import('@/lib/firebase')
+      const snap = await getDoc(doc(db, 'sessions', sid))
+      if (snap.exists() && snap.data().status !== 'finished') {
+        setSessionId(sid)
+      }
+    })
   }, [user])
 
   useEffect(() => {
