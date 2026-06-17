@@ -76,9 +76,10 @@ async function getServiceAccountToken(
     new TextEncoder().encode(signingInput),
   );
 
-  const jwt = `${signingInput}.${btoa(
-    String.fromCharCode(...new Uint8Array(signature)),
-  )
+  const signatureArray = new Uint8Array(signature)
+  let binary = ''
+  for (let i = 0; i < signatureArray.length; i++) binary += String.fromCharCode(signatureArray[i])
+  const jwt = `${signingInput}.${btoa(binary)
     .replace(/=/g, "")
     .replace(/\+/g, "-")
     .replace(/\//g, "_")}`;
